@@ -1,6 +1,7 @@
 package com.example.testappofferwall.game;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,6 +13,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.example.testappofferwall.Base.BaseActivity;
 import com.example.testappofferwall.Base.SQLiteHandler;
 import com.example.testappofferwall.R;
+import com.example.testappofferwall.start.StartActivity;
 
 import java.util.Objects;
 
@@ -51,11 +53,13 @@ public class GameActivity extends BaseActivity implements GameView {
         switch (item.getItemId()) {
             case R.id.menu_exit:
                 finish();
-                System.exit(0);
                 return true;
             case R.id.menu_clear_attribute:
-                Toast.makeText(getContext(), "Clear attribute", Toast.LENGTH_SHORT).show();
                 db.deleteAllowValue();
+                Intent goToStart = new Intent(GameActivity.this, StartActivity.class);
+                goToStart.putExtra("visit", 1);
+                startActivity(goToStart);
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -70,6 +74,6 @@ public class GameActivity extends BaseActivity implements GameView {
 
     @Override
     public Context getContext() {
-        return null;
+        return this;
     }
 }

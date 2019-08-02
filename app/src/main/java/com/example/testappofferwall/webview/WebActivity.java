@@ -3,6 +3,7 @@ package com.example.testappofferwall.webview;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,13 +12,13 @@ import android.view.MenuItem;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.testappofferwall.Base.BaseActivity;
 import com.example.testappofferwall.Base.SQLiteHandler;
 import com.example.testappofferwall.R;
+import com.example.testappofferwall.start.StartActivity;
 
 import java.util.Objects;
 
@@ -84,8 +85,12 @@ public class WebActivity extends BaseActivity implements com.example.testappoffe
                 System.exit(0);
                 return true;
             case R.id.menu_clear_attribute:
-                Toast.makeText(getContext(), "Clear attribute", Toast.LENGTH_SHORT).show();
                 db.deleteAllowValue();
+                Intent goToStart = new Intent(WebActivity.this, StartActivity.class);
+                goToStart.putExtra("visit", 1);
+                startActivity(goToStart);
+                finish();
+                System.exit(0);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

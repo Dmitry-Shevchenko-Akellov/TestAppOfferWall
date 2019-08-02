@@ -13,7 +13,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
 
     private static final String TAG = SQLiteHandler.class.getSimpleName();
 
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 4;
 
     private static final String DATABASE_NAME = "testofferwall";
 
@@ -31,7 +31,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_ALLOW_TABLE = "CREATE TABLE " + TABLE_ALLOW + "("
-                + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"+ KEY_ALLOW + " INTEGER NOT NULL UNIQUE"+ ")";
+                + KEY_ID + " INTEGER PRIMARY KEY UNIQUE,"+ KEY_ALLOW + " INTEGER NOT NULL UNIQUE"+ ")";
 
         db.execSQL(CREATE_ALLOW_TABLE);
     }
@@ -73,7 +73,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
     public void deleteAllowValue() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_ALLOW, null, null);
-        db.close();
+        //db.close();
 
         Log.d(TAG, "Deleted allow attribute");
     }
