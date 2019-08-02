@@ -8,12 +8,15 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.testappofferwall.Base.SQLiteHandler;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class StartPresImpl implements StartPres {
+public class StartPresenterImpl implements StartPresenter {
+
     private StartView startViewInt;
+    private SQLiteHandler db;
 
     @Override
     public void attachView(StartView view) {
@@ -27,6 +30,7 @@ public class StartPresImpl implements StartPres {
 
     @Override
     public void sendRequest() {
+        db = new SQLiteHandler(startViewInt.getContext());
         RequestQueue getRequestQueue = Volley.newRequestQueue(startViewInt.getContext());
 
         String url = "https://tstofferwall.000webhostapp.com/get_request.php?status=true";
@@ -40,9 +44,11 @@ public class StartPresImpl implements StartPres {
                         boolean allowAttribute = jsonObject.getBoolean("allow");
                         if (allowAttribute) {
                             startViewInt.startNextStep(true);
+                            db.addAllowValue(1);
                         }
                         else {
                             startViewInt.startNextStep(false);
+                            db.addAllowValue(0);
                         }
                     }
                     else {
