@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">TestAppOfferWall</string>
+    <string name="send_request">Send request</string>
+    <string name="clear_attribute">Clear attribute</string>
+</resources>
