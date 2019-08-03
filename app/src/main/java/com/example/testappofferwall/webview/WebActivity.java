@@ -90,7 +90,6 @@ public class WebActivity extends BaseActivity implements com.example.testappoffe
                 goToStart.putExtra("visit", 1);
                 startActivity(goToStart);
                 finish();
-                System.exit(0);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -134,6 +134,7 @@ public class GameActivity extends BaseActivity implements GameView, View.OnClick
     @Override
     public void lose() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setCancelable(false);
         alertDialogBuilder.setMessage("You lose! Try again?");
         alertDialogBuilder.setPositiveButton("Yes",
                 new DialogInterface.OnClickListener() {
@@ -149,7 +150,9 @@ public class GameActivity extends BaseActivity implements GameView, View.OnClick
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent goToStart = new Intent(GameActivity.this, StartActivity.class);
+                goToStart.putExtra("visit", 1);
                 Bank.money_bank = 1000;
+                db.deleteAllowValue();
                 startActivity(goToStart);
                 finish();
             }

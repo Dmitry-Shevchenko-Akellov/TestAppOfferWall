@@ -46,6 +46,7 @@ public class StartActivity extends BaseActivity implements StartView {
             }
             else if (visit == 1) {
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+                alertDialogBuilder.setCancelable(false);
                 alertDialogBuilder.setMessage("Play again?");
                         alertDialogBuilder.setPositiveButton("Yes",
                                 new DialogInterface.OnClickListener() {
@@ -63,7 +64,6 @@ public class StartActivity extends BaseActivity implements StartView {
                         System.exit(0);
                     }
                 });
-
                 AlertDialog alertDialog = alertDialogBuilder.create();
                 alertDialog.show();
             }
