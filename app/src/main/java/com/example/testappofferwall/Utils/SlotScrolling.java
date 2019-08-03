@@ -7,10 +7,8 @@ import android.view.LayoutInflater;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import com.example.testappofferwall.R;
+import com.example.testappofferwall.game.GameView;
 
 public class SlotScrolling extends FrameLayout {
 
@@ -19,7 +17,7 @@ public class SlotScrolling extends FrameLayout {
     Integer last_value = 0, first_value = 0;
 
     ImageView current_item, next_item;
-    SlotEnd slotEnd;
+    GameView gameView;
 
     private void initSlots (Context context) {
         LayoutInflater.from(context).inflate(R.layout.one_slot_scroll, this);
@@ -40,7 +38,7 @@ public class SlotScrolling extends FrameLayout {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                setItem(current_item, first_value %9);
+                setItem(current_item, first_value % 9);
                 current_item.setTranslationY(0);
                 if (first_value != spin_count) {
                     randomValue(item, spin_count);
@@ -50,7 +48,7 @@ public class SlotScrolling extends FrameLayout {
                     last_value = 0;
                     first_value = 0;
                     setItem(next_item, item);
-                    slotEnd.slotEnd(item % 9, spin_count);
+                    gameView.spinEnd(item % 9, spin_count);
                 }
             }
 
@@ -104,17 +102,17 @@ public class SlotScrolling extends FrameLayout {
         return Integer.parseInt(next_item.getTag().toString());
     }
 
-    public SlotScrolling(@NonNull Context context) {
+    public SlotScrolling( Context context) {
         super(context);
         initSlots(context);
     }
 
-    public SlotScrolling(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public SlotScrolling( Context context, AttributeSet attrs) {
         super(context, attrs);
         initSlots(context);
     }
 
-    public void setSlotEnd(SlotEnd slotEnd) {
-        this.slotEnd = slotEnd;
+    public void setSlotEndInt(GameView gameView) {
+        this.gameView = gameView;
     }
 }

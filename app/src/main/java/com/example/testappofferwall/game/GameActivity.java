@@ -1,8 +1,10 @@
 package com.example.testappofferwall.game;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -11,15 +13,14 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.testappofferwall.Base.BaseActivity;
 import com.example.testappofferwall.Utils.Bank;
 import com.example.testappofferwall.Utils.SQLiteHandler;
 import com.example.testappofferwall.R;
-import com.example.testappofferwall.Utils.SlotEnd;
 import com.example.testappofferwall.Utils.SlotScrolling;
-import com.example.testappofferwall.Utils.valueSlot;
 import com.example.testappofferwall.start.StartActivity;
 
 import java.util.Objects;
@@ -32,6 +33,7 @@ public class GameActivity extends BaseActivity implements GameView, View.OnClick
     Button spinBtn;
     TextView myMoney;
     SlotScrolling slotOne, slotTwo, slotThree;
+    int last_money = 0;
 
     int count_item = 0;
 
@@ -51,11 +53,18 @@ public class GameActivity extends BaseActivity implements GameView, View.OnClick
         slotThree = findViewById(R.id.item_3);
         myMoney = findViewById(R.id.my_money);
 
-        slotOne.setSlotEnd((SlotEnd) GameActivity.this);
-        slotTwo.setSlotEnd((SlotEnd) GameActivity.this);
-        slotThree.setSlotEnd((SlotEnd) GameActivity.this);
+        slotOne.setSlotEndInt(GameActivity.this);
+        slotTwo.setSlotEndInt(GameActivity.this);
+        slotThree.setSlotEndInt(GameActivity.this);
 
         spinBtn.setOnClickListener(this);
+
+        if (last_money == 0 ) {
+            myMoney.setText(String.valueOf(Bank.money_bank));
+        }
+        else {
+            myMoney.setText(String.valueOf(last_money));
+        }
 
         setupToolbar();
     }
@@ -92,17 +101,6 @@ public class GameActivity extends BaseActivity implements GameView, View.OnClick
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        gamePresenter.detachView();
-    }
-
-    @Override
-    public Context getContext() {
-        return this;
-    }
-
-    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.spinButton:
@@ -116,33 +114,97 @@ public class GameActivity extends BaseActivity implements GameView, View.OnClick
                     Bank.money_bank -= 100;
                     myMoney.setText(String.valueOf(Bank.money_bank));
                 }
-                else {
-                    Toast.makeText(getContext(), "Insufficient Funds", Toast.LENGTH_SHORT).show();
-                }
                 break;
         }
     }
 
     @Override
-    public void slotEnd(int result, int i) {
+    public void spinEnd(int result, int i) {
         if (count_item < 2) {
             count_item++;
         }
         else {
             spinBtn.setEnabled(true);
-
             count_item = 0;
 
-            if (slotOne.getValue() == valueSlot.BELL && slotTwo.getValue() == valueSlot.BELL &&
-                    slotThree.getValue() == valueSlot.BELL) {
-                
-                Bank.money_bank += 100;
-                myMoney.setText(String.valueOf(Bank.money_bank));
-            }
-            else if {
-
-            }
+            gamePresenter.startSpin(slotOne.getValue(), slotTwo.getValue(), slotThree.getValue());
         }
     }
-    
+
+    @Override
+    public void lose() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage("You lose! Try again?");
+        alertDialogBuilder.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        Bank.money_bank = 1000;
+                        finish();
+                        startActivity(getIntent());
+                    }
+                });
+
+        alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent goToStart = new Intent(GameActivity.this, StartActivity.class);
+                Bank.money_bank = 1000;
+                startActivity(goToStart);
+                finish();
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+    @Override
+    public void setBank(int money_won) {
+        myMoney.setText(String.valueOf(Bank.money_bank));
+        if (money_won == 0) {
+            Toast toast = Toast.makeText(GameActivity.this, "You did not win.", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+            toast.show();
+        } else {
+            Toast toast = Toast.makeText(GameActivity.this, "You got " + money_won + " money!", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+            toast.show();
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        gamePresenter.detachView();
+    }
+
+    @Override
+    public Context getContext() {
+        return this;
+    }
 }
