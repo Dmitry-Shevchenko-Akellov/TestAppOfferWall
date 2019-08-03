@@ -3,4 +3,6 @@
     <string name="send_request">Send request</string>
     <string name="clear_attribute">Clear attribute</string>
     <string name="exit">Exit</string>
+    <string name="spin">Spin</string>
+    <string name="money">money</string>
 </resources>

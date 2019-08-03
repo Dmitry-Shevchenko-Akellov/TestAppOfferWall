@@ -1,4 +1,4 @@
-package com.example.testappofferwall.Base;
+package com.example.testappofferwall.Utils;
 
 import android.content.ContentValues;
 import android.content.Context;

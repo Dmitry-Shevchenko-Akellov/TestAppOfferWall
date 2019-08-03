@@ -10,7 +10,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.testappofferwall.Base.BaseActivity;
-import com.example.testappofferwall.Base.SQLiteHandler;
+import com.example.testappofferwall.Utils.SQLiteHandler;
 import com.example.testappofferwall.R;
 import com.example.testappofferwall.game.GameActivity;
 import com.example.testappofferwall.webview.WebActivity;

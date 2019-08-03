@@ -16,7 +16,7 @@ import android.webkit.WebViewClient;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.testappofferwall.Base.BaseActivity;
-import com.example.testappofferwall.Base.SQLiteHandler;
+import com.example.testappofferwall.Utils.SQLiteHandler;
 import com.example.testappofferwall.R;
 import com.example.testappofferwall.start.StartActivity;
 
