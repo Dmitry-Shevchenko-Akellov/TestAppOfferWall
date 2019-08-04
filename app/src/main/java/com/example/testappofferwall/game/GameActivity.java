@@ -67,6 +67,8 @@ public class GameActivity extends BaseActivity implements GameView, View.OnClick
         }
 
         setupToolbar();
+
+
     }
 
     private void setupToolbar() {

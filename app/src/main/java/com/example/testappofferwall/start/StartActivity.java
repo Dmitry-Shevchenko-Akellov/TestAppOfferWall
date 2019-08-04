@@ -3,6 +3,7 @@ package com.example.testappofferwall.start;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -34,7 +35,32 @@ public class StartActivity extends BaseActivity implements StartView {
 
         db = new SQLiteHandler(getContext());
 
-        startQuest(visit);
+        boolean isConn = isNetworkConnected();
+        if (isConn) {
+            startQuest(visit);
+        }
+        else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Error");
+            builder.setMessage("Check internet connection.");
+            builder.setCancelable(false);
+            builder.setNeutralButton("Refresh", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                    overridePendingTransition( 0, 0);
+                    startActivity(getIntent());
+                    overridePendingTransition( 0, 0);
+                }
+            });
+            builder.show();
+        }
+    }
+
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return cm.getActiveNetworkInfo() != null;
     }
 
     private void startQuest(Integer visit) {
